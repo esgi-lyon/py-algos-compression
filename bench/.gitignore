@@ -1,0 +1,8 @@
+.idea/
+batchs/**/*.pdf
+batchs/**/*.png
+batchs/**/*.xls*
+batchs/**/*.pdf
+batchs/**/*.jpeg
+batchs/**/*.jpg
+results/**/*.*
