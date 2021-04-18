@@ -1,4 +1,4 @@
-## Benchmark compression 
+## Benchmark compression
 
 ## Requis
 
@@ -12,10 +12,6 @@ fish install --offline=omf.tar.gz
 # echo 'db_shell: /usr/bin/fish' >> /etc/nsswitch.conf
 ```
 
-## Problèmatique
-
-- Comment garantir le non dépassement des **40Go** limite des frontaux avec la nouvelle fonctionnalité de brouillons, les lots en pending et les lots en erreur ?
-
 #### Algorithmes (sans perte) testés :
 
 - **LZMA2 (xz)** : un des meilleur taux de compression, meilleur que brotli sur de gros volumes. Toutefois lent et consommateur en CPU
@@ -23,9 +19,9 @@ fish install --offline=omf.tar.gz
 - **Brotli** : Créer par google. Il utilise un algorithme de compression offrant une vitesse de décompression comparable à l'algorithme deflate, et un taux de compression proche de LZMA. Supporte peux de types de fichiers (image / texte seulement)
 
 - **Deflate 64 / gzip** : temps de décompression rapide / taux de compression bas (le plus bas) / utilisation correcte du CPU
- 
+
 - **Zopfli (non testé)** : Aaussi créer par google qui présente des un équilibre intéressant entre taux de compression et vitesse (décomp / comp). Utilise les algos de gzip ou zlib avec de meilleurs résulats en compression mais pas en vitesse.
- 
+
 - **b2zip** : Taux de compression intéressant basé sur plusieurs outils (Burrows–Wheeler, tables de huffman) / grosse conso du CPU, single thread (voir pbzip2 pour le multi) / lent à la compression et rapide en decompression
 
 #### Utile à connaître
@@ -37,7 +33,7 @@ fish install --offline=omf.tar.gz
 
 Avantage des différents algorithmes de compression selon les critères de **__temps__** (décompression / compression), **_usage du CPU_**, **_taux de compression_** et du **__type de dictionnaire__**
 
-> Un taux de compression bas indique de bons résultats 
+> Un taux de compression bas indique de bons résultats
 
 > Ces résultats sont purement arbitraires et se basent sur plusieurs études trouver sur le google et le niveau de compression moyen de **5**
 
@@ -58,7 +54,7 @@ Avantage des différents algorithmes de compression selon les critères de **__t
 
 ### Tests
 
-Toutes tailles : `make tar` 
+Toutes tailles : `make tar`
 Taille + algo spécifique `Small.tar.gz`
 
 - c => temps de compression (ms)
@@ -77,8 +73,8 @@ Taille + algo spécifique `Small.tar.gz`
 
 [resultats](results-9.md)
 
-#### Impact global 
-> sur une centaine de lots de brouillon que nous ferais gagner brotli ou lzma
+#### Impact global
+> sur une centaine de fichiers que nous ferais gagner brotli ou lzma
 
 - En admettant que j'ai :
 
@@ -88,12 +84,12 @@ Taille + algo spécifique `Small.tar.gz`
   - 300 brouillons S => 4,8Go
   - 800 brouillons XS => 2.640Go
 
-&rarr; Au total **~26.8Go** d'espace pris par des brouillons :
+&rarr; Au total **~26.8Go** d'espace pris par les fichiers:
 
 Calcul (taux 3) :
-```js
-// nb lots x gain (Mo) = gain total pour tous ces lots
-(75 * 50) + (100 * 29)  + (180 * 6) + (300 * 4) + (800 * 3) = 11330
+```py
+# nb lots x gain (Mo) = gain total pour tous ces lots
+(75 * 50) + (100 * 29) + (180 * 6) + (300 * 4) + (800 * 3) = 11330
 ```
 
 - avec le taux 3 :
@@ -114,7 +110,7 @@ Calcul (taux 3) :
 | gzip     | 0,1585      |
 | b2zip    | 0.3715      |
 
-- avec le taux 9 : 
+- avec le taux 9 :
 
 | Algo     | ~gain (Go)  |
 |:--------:|:-----------:|
@@ -123,11 +119,11 @@ Calcul (taux 3) :
 | gzip     | 0,1585      |
 | b2zip    | 0,6095      |
 
->On gagne plus de la moitié de l'espace avec **brotli** et **lzma** 
+>On gagne plus de la moitié de l'espace avec **brotli** et **lzma**
 
 ### Libs php
 
-**Brotli** : 
+**Brotli** :
 
 ```
 wget https://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -139,7 +135,7 @@ sudo yum install -y --enablerepo=remi php71-php-brotli
 
 echo -n 'extension=brotli.so' > 20-brotli.ini
 
-> Fonctionnera mieux avec une maj du rôle php-fpm qui installe l'extension au bon endroit 
+> Fonctionnera mieux avec une maj du rôle php-fpm qui installe l'extension au bon endroit
 > ici le service php ne trouve pas l'extension installée au mauvais endroit
 
 **b2zip** :
@@ -175,7 +171,7 @@ La meilleure alternative est d'utiliser cette librairie :
 
 ##### En php :
 
-xz (lzma2) : 
+xz (lzma2) :
 [php.internals: Implement lzma (xz?)...](https://news-web.php.net/php.internals/106651)
 
 ##### Commandes :
