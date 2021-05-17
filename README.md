@@ -1,6 +1,8 @@
 # Algo
 > **Etudes sur les algorithmes de compression **
 
+### [Documentation Sommaire](doc/0-summary.md)
+
 ## 0. Requis
 
 - `python 3.x`
