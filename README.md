@@ -5,7 +5,7 @@
 
 ## 0. Requis
 
-- `python 3.x`
+- `miniconda`
 
 ## 1. Install
 
